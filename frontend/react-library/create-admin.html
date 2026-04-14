@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Create Admin User</title>
+  </head>
+  <body>
+    <h1>Create Admin User</h1>
+    <p style="color: #666; margin-bottom: 20px">
+      Note: Update the API URL below if your backend is running on a different
+      port.
+    </p>
+    <button onclick="createAdmin()">Create Admin</button>
+    <div
+      id="result"
+      style="margin-top: 20px; padding: 10px; border: 1px solid #ccc"
+    ></div>
+
+    <script>
+      // Change this if your backend is running on a different port
+      const API_BASE_URL = "http://localhost:8080";
+
+      async function createAdmin() {
+        const resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = "Creating admin user...";
+
+        try {
+          const response = await fetch(
+            `${API_BASE_URL}/api/auth/create-admin`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+            },
+          );
+
+          const data = await response.json();
+
+          if (response.ok) {
+            resultDiv.innerHTML = `
+                        <h2 style="color: green;">Success!</h2>
+                        <p>${data.message}</p>
+                        <p><strong>Email:</strong> ${data.email}</p>
+                        <p><strong>Password:</strong> ${data.password}</p>
+                    `;
+          } else {
+            resultDiv.innerHTML = `<h2 style="color: red;">Error:</h2><p>${data.error || "Failed to create admin"}</p>`;
+          }
+        } catch (error) {
+          resultDiv.innerHTML = `<h2 style="color: red;">Error:</h2><p>${error.message}</p>`;
+        }
+      }
+    </script>
+  </body>
+</html>
