@@ -35,10 +35,11 @@ RUN mvn -B -q -e -DskipTests dependency:go-offline
 # Copy backend source
 COPY backend/spring-boot-library/src ./src
 
+
 # Copy React build output into Spring Boot static resources
 COPY --from=frontend-builder /app/frontend/dist ./src/main/resources/static
 
-RUN mkdir -p ./src/main/resources && echo "spring.web.resources.cache.period=31536000" >> ./src/main/resources/application.properties
+# Note: application.properties is now committed to the repo, no need to create it here
 
 # Build jar (frontend is now embedded)
 RUN mvn clean package -DskipTests
