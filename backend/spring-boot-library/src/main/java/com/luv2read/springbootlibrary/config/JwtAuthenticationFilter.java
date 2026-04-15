@@ -30,8 +30,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
         String path = request.getRequestURI();
         String method = request.getMethod();
-        // Skip filter for auth endpoints and OPTIONS requests (CORS preflight)
-        return path.startsWith("/api/auth/") || "OPTIONS".equalsIgnoreCase(method);
+        // Skip filter for auth endpoints, OPTIONS requests (CORS preflight), and static resources
+        return path.startsWith("/api/auth/") 
+                || "OPTIONS".equalsIgnoreCase(method)
+                || path.equals("/")
+                || path.equals("/index.html")
+                || path.startsWith("/assets/")
+                || path.startsWith("/static/")
+                || path.equals("/manifest.json")
+                || path.equals("/robots.txt")
+                || path.equals("/favicon.ico")
+                || path.endsWith(".js")
+                || path.endsWith(".css")
+                || path.endsWith(".png")
+                || path.endsWith(".jpg")
+                || path.endsWith(".svg")
+                || path.endsWith(".ico")
+                || path.endsWith(".woff")
+                || path.endsWith(".woff2")
+                || path.endsWith(".ttf");
     }
 
     @Override

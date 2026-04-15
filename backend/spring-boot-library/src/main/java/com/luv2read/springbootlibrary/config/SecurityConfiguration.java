@@ -41,6 +41,11 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(configurer ->
                         configurer
                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                                // Static resources - always public
+                                .requestMatchers("/", "/index.html", "/assets/**", "/static/**",
+                                        "/manifest.json", "/robots.txt", "/favicon.ico",
+                                        "/**/*.js", "/**/*.css", "/**/*.png", "/**/*.jpg",
+                                        "/**/*.svg", "/**/*.ico", "/**/*.woff", "/**/*.woff2", "/**/*.ttf").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
                                 .requestMatchers(HttpMethod.POST, "/api/auth/register").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/api/auth/validate").permitAll()
