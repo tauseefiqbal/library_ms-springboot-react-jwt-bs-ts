@@ -38,6 +38,8 @@ COPY backend/spring-boot-library/src ./src
 # Copy React build output into Spring Boot static resources
 COPY --from=frontend-builder /app/frontend/dist ./src/main/resources/static
 
+RUN mkdir -p ./src/main/resources && echo "spring.web.resources.cache.period=31536000" >> ./src/main/resources/application.properties
+
 # Build jar (frontend is now embedded)
 RUN mvn clean package -DskipTests
 
