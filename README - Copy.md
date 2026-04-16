@@ -118,12 +118,8 @@ A full-stack library management application built with **React** (TypeScript + V
 
 The application is deployed and available at:
 
-> **https://library-ms-springboot-react-jwt-bs-ts-fe.onrender.com**
+> **https://library-ms-springboot-react-jwt-bs-ts.onrender.com**
 
-| Component | URL |
-|---|---|
-| **Frontend** | https://library-ms-springboot-react-jwt-bs-ts-fe.onrender.com |
-| **Backend API** | https://library-ms-springboot-react-jwt-bs-ts.onrender.com |
 
 > **Note:** The application is hosted on Render's starter package. 
 
@@ -241,8 +237,8 @@ Before running this application, ensure you have the following installed:
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
-cd library_ms
+git clone https://github.com/tauseefiqbal/library_ms-springboot-react-jwt-bs-ts.git
+cd library_ms-springboot-react-jwt-bs-ts
 ```
 
 ### 2. Database Setup
@@ -496,3 +492,4 @@ This project is for educational purposes.
 ---
 
 For any questions or issues, please open an issue in the repository.
+ 
