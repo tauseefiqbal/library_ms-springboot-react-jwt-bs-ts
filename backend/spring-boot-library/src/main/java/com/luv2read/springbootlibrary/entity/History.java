@@ -6,11 +6,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
 
 @Entity
 @Table(name = "History")
-@Data
 public class History {
 
     public History(){}
@@ -51,6 +49,30 @@ public class History {
 
     @Column(name="img", columnDefinition = "LONGTEXT")
     private String img;
+
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+
+    public String getUserEmail() { return userEmail; }
+    public void setUserEmail(String userEmail) { this.userEmail = userEmail; }
+
+    public String getCheckoutDate() { return checkoutDate; }
+    public void setCheckoutDate(String checkoutDate) { this.checkoutDate = checkoutDate; }
+
+    public String getReturnedDate() { return returnedDate; }
+    public void setReturnedDate(String returnedDate) { this.returnedDate = returnedDate; }
+
+    public String getTitle() { return title; }
+    public void setTitle(String title) { this.title = title; }
+
+    public String getAuthor() { return author; }
+    public void setAuthor(String author) { this.author = author; }
+
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
+
+    public String getImg() { return img; }
+    public void setImg(String img) { this.img = img; }
 }
 
 
