@@ -22,7 +22,7 @@ ENV VITE_API_BASE_URL=""
 RUN npm run build
 
 # ---- STAGE 2: Build Spring Boot Backend ----
-FROM maven:3.9.9-eclipse-temurin-21 AS backend-builder
+FROM maven:3.9.15-eclipse-temurin-25 AS backend-builder
 
 WORKDIR /app
 
@@ -44,7 +44,7 @@ RUN mkdir -p ./src/main/resources && echo "spring.web.resources.cache.period=315
 RUN mvn clean package -DskipTests
 
 # ---- STAGE 3: Runtime ----
-FROM eclipse-temurin:21-jre-alpine
+FROM eclipse-temurin:25-jre-alpine
 
 WORKDIR /app
 
