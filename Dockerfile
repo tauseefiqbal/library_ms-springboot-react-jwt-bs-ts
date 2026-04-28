@@ -1,6 +1,6 @@
 # ===========================================================
 # Combined Dockerfile: React Frontend + Spring Boot Backend
-# Java 25 + Maven 3.9.15 - Updated 2026-04-27
+# Java 25 + Maven 3.9.15 - Updated 2026-04-28
 # ===========================================================
 
 # ---- STAGE 1: Build React Frontend ----
