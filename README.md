@@ -118,10 +118,7 @@ A full-stack library management application built with **React** (TypeScript + V
 
 The application is deployed and available at:
 
-> **https://library-ms-springboot-react-jwt-bs-ts.onrender.com**
-
-
-> **Note:** The application is hosted on Render's starter package. 
+> **https://libraryms-springboot-react-jwt-bs-ts-production-218d.up.railway.app/**
 
 ---
 
@@ -155,7 +152,7 @@ Each test user has:
 
 ### Getting Started
 
-1. Open the application in your browser — use the [live deployment](https://library-ms-springboot-react-jwt-bs-ts-fe.onrender.com) or the local dev server (default: `http://localhost:5173`).
+1. Open the application in your browser — use the [live deployment](https://libraryms-springboot-react-jwt-bs-ts-production-218d.up.railway.app/) or the local dev server (default: `http://localhost:5173`).
 2. Click **Sign In** in the navbar to log in, or click **Register** to create a new account.
 3. Fill in your name, email, and password, then submit the registration form.
 4. After logging in, you will be redirected to the **Home** page.
