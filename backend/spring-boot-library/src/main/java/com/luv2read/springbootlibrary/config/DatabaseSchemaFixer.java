@@ -29,21 +29,10 @@ public class DatabaseSchemaFixer {
 
         log.info("Found history table as: '{}'", tableName);
 
-        // If table exists as lowercase 'history', rename to 'History' to match entity
-        if ("history".equals(tableName)) {
-            try {
-                jdbcTemplate.execute("RENAME TABLE `history` TO `History`");
-                log.info("Renamed table 'history' -> 'History'");
-                tableName = "History";
-            } catch (Exception e) {
-                log.warn("Could not rename history table: {}", e.getMessage());
-            }
-        }
-
         // Fix column types
         try {
-            jdbcTemplate.execute("ALTER TABLE `" + tableName + "` MODIFY COLUMN `description` TEXT");
-            jdbcTemplate.execute("ALTER TABLE `" + tableName + "` MODIFY COLUMN `img` LONGTEXT");
+            jdbcTemplate.execute("ALTER TABLE `History` MODIFY COLUMN `description` TEXT");
+            jdbcTemplate.execute("ALTER TABLE `History` MODIFY COLUMN `img` LONGTEXT");
             log.info("History table columns verified/updated successfully");
         } catch (Exception e) {
             log.warn("Could not alter History table columns (may already be correct): {}", e.getMessage());
