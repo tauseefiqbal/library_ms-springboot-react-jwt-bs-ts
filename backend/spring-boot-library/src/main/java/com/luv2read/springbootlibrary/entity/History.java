@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "History")
+@Table(name = "history")
 public class History {
 
     public History() {
@@ -48,7 +48,7 @@ public class History {
     @Column(name = "description", columnDefinition = "TEXT")
     private String description;
 
-    @Column(name = "img", columnDefinition = "LONGTEXT")
+    @Column(name = "img", columnDefinition = "TEXT")
     private String img;
 
     public Long getId() {

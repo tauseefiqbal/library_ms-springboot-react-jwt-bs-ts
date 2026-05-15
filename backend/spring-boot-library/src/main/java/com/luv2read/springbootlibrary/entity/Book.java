@@ -34,7 +34,7 @@ public class Book {
     @Column(name = "category")
     private String category;
 
-    @Column(name = "img", columnDefinition = "LONGTEXT")
+    @Column(name = "img", columnDefinition = "TEXT")
     private String img;
 
     public Long getId() { return id; }

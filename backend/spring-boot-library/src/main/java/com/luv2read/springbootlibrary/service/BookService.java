@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,6 +23,8 @@ import com.luv2read.springbootlibrary.responsemodels.ShelfCurrentLoansResponse;
 @Service
 @Transactional
 public class BookService {
+
+    private static final Logger log = LoggerFactory.getLogger(BookService.class);
 
     private final BookRepository bookRepository;
 
@@ -42,6 +46,11 @@ public class BookService {
         List<Checkout> existingCheckouts = checkoutRepository.findByUserEmailAndBookId(userEmail, bookId);
 
         if (!book.isPresent() || !existingCheckouts.isEmpty() || book.get().getCopiesAvailable() <= 0) {
+            log.warn("Checkout rejected - user={}, bookId={}, bookPresent={}, existingCheckouts={}, copiesAvailable={}",
+                userEmail, bookId,
+                book.isPresent(),
+                existingCheckouts.size(),
+                book.isPresent() ? book.get().getCopiesAvailable() : "N/A");
             throw new Exception("Book doesn't exist or already checked out by user");
         }
 
