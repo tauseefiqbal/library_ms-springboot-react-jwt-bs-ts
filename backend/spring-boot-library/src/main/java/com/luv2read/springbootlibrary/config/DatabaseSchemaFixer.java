@@ -18,8 +18,16 @@ public class DatabaseSchemaFixer {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    // OPTIMIZATION: Only run schema fixes when explicitly enabled via environment variable
+    // This prevents unnecessary database queries on every startup (Railway auto-scaling issue)
+    // Set ENABLE_SCHEMA_FIXES=true only for initial deployment or manual migrations
     @EventListener(ApplicationReadyEvent.class)
     public void fixColumnTypes() {
+        if (!"true".equalsIgnoreCase(System.getenv("ENABLE_SCHEMA_FIXES"))) {
+            log.debug("Schema fixes disabled. Set ENABLE_SCHEMA_FIXES=true to run column type fixes.");
+            return;
+        }
+        
         // Fix messages.closed: MySQL tinyint(1) migrated to smallint/integer in PostgreSQL
         // Hibernate tries to ALTER to boolean without USING clause — fix it here with CAST
         try {
@@ -45,6 +53,11 @@ public class DatabaseSchemaFixer {
 
     @EventListener(ApplicationReadyEvent.class)
     public void fixSequences() {
+        if (!"true".equalsIgnoreCase(System.getenv("ENABLE_SCHEMA_FIXES"))) {
+            log.debug("Schema fixes disabled. Set ENABLE_SCHEMA_FIXES=true to run sequence fixes.");
+            return;
+        }
+        
         // All entities use GenerationType.IDENTITY. MySQL AUTO_INCREMENT doesn't migrate
         // to PostgreSQL — the id columns are plain bigint with no sequence/default.
         // Fix by creating a sequence and setting it as the column default.
@@ -97,6 +110,11 @@ public class DatabaseSchemaFixer {
 
     @EventListener(ApplicationReadyEvent.class)
     public void fixHistoryTableSchema() {
+        if (!"true".equalsIgnoreCase(System.getenv("ENABLE_SCHEMA_FIXES"))) {
+            log.debug("Schema fixes disabled. Set ENABLE_SCHEMA_FIXES=true to run history table fixes.");
+            return;
+        }
+        
         // Check which table name exists (case-sensitive on Linux MySQL)
         String tableName = findHistoryTableName();
         if (tableName == null) {
