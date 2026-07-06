@@ -1,6 +1,6 @@
 # ===========================================================
-# Dockerfile for Render - React Frontend + Spring Boot Backend
-# Optimized for Render's free tier
+# Combined Dockerfile: React Frontend + Spring Boot Backend
+# Java 25 + Maven 3.9.15 - Updated 2026-04-28
 # ===========================================================
 
 # ---- STAGE 1: Build React Frontend ----
@@ -38,7 +38,6 @@ COPY backend/spring-boot-library/src ./src
 # Copy React build output into Spring Boot static resources
 COPY --from=frontend-builder /app/frontend/dist ./src/main/resources/static
 
-# Add cache control for static resources
 RUN mkdir -p ./src/main/resources && echo "spring.web.resources.cache.period=31536000" >> ./src/main/resources/application.properties
 
 # Build jar (frontend is now embedded)
@@ -47,26 +46,11 @@ RUN mvn clean package -DskipTests
 # ---- STAGE 3: Runtime ----
 FROM eclipse-temurin:25-jre-alpine
 
-# Install curl for health checks (optional but recommended)
-RUN apk add --no-cache curl
-
 WORKDIR /app
 
-# Copy the JAR from the builder stage
 COPY --from=backend-builder /app/target/*.jar app.jar
-
-# Create a non-root user for security
-RUN addgroup -S spring && adduser -S spring -G spring && \
-    chown spring:spring app.jar
-
-# Switch to non-root user
-USER spring
 
 EXPOSE 8080
 
-# Health check for Render
-HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-  CMD curl -f http://localhost:8080/actuator/health || exit 1
+ENTRYPOINT ["sh", "-c", "java -XX:+UseParallelGC -Xss512k -XX:MaxRAMPercentage=75.0 -jar app.jar --server.port=${PORT:-8080}"]
 
-# Optimized JVM settings for Render's free tier (512MB RAM limit)
-ENTRYPOINT ["sh", "-c", "java -XX:+UseParallelGC -Xss512k -Xmx384m -XX:MaxRAMPercentage=70.0 -Djava.security.egd=file:/dev/./urandom -jar app.jar --server.port=${PORT:-8080} --server.address=0.0.0.0"]
