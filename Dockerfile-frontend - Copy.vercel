@@ -1,0 +1,36 @@
+# ===========================================================
+# Vercel Dockerfile.vercel — Frontend Only (React + Vite)
+# ===========================================================
+
+# ---- Stage 1: Build React App ----
+FROM node:20-alpine AS builder
+
+WORKDIR /app
+
+# Copy package files
+COPY frontend/react-library/package.json frontend/react-library/package-lock.json* ./
+
+# Install dependencies
+RUN npm ci || npm install
+
+# Copy source code
+COPY frontend/react-library/ ./
+
+# Build Vite app
+RUN npm run build
+
+
+# ---- Stage 2: Serve Static Files ----
+FROM nginx:alpine
+
+# Remove default nginx static files
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy built frontend from builder stage
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Expose port (Vercel auto-detects)
+EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
