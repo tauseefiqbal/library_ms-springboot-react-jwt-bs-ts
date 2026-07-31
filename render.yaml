@@ -1,0 +1,41 @@
+services:
+  - type: web
+    name: library-ms-backend
+    env: docker
+    plan: starter
+    autoDeploy: true
+
+    # Render will build your Dockerfile automatically
+    dockerfilePath: ./Dockerfile
+
+    # Health check (optional but recommended)
+    healthCheckPath: /actuator/health
+
+    # Environment variables for Spring Boot backend
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:postgresql://ep-shiny-field-a8z7adco-pooler.eastus2.azure.neon.tech:5432/library_ms_db?sslmode=require
+
+      - key: SPRING_DATASOURCE_USERNAME
+        value: neondb_owner
+
+      - key: SPRING_DATASOURCE_PASSWORD
+        value: npg_M0zvn2macAGV
+
+      - key: JWT_SECRET_KEY
+        value: 9f83b21c7a6e4d5f8b2a1c9d0e7f6a5b4c3d2e1f9a8b7c6d5e4f3a2b1c0d9e8
+
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://<your-netlify-site>.netlify.app
+
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+
+      - key: SPRING_THREADS_VIRTUAL_ENABLED
+        value: true
+
+      - key: SERVER_ERROR_INCLUDE_MESSAGE
+        value: never
+
+      - key: SERVER_ERROR_INCLUDE_STACKTRACE
+        value: never
