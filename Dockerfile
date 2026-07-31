@@ -1,6 +1,6 @@
 # ===========================================================
-# Fly.io-Optimized Dockerfile: React + Spring Boot
-# Java 25 + Maven 3.9.15 - Updated 2026-07-08
+# Vercel-Optimized Dockerfile: React + Spring Boot
+# Java 25 + Maven 3.9.15 - Updated 2026-07-30
 # ===========================================================
 
 # ---- STAGE 1: Build React Frontend ----
@@ -13,7 +13,6 @@ RUN npm ci || npm install
 
 COPY frontend/react-library/ ./
 
-# Fly.io will reverse-proxy /api → backend
 ENV VITE_API_BASE_URL=""
 RUN npm run build
 
@@ -27,30 +26,25 @@ RUN mvn -B -q -DskipTests dependency:go-offline
 
 COPY backend/spring-boot-library/src ./src
 
-# Copy React build output into Spring Boot static resources
 COPY --from=frontend-builder /app/frontend/dist ./src/main/resources/static
-
-# Enable Fly.io health endpoint
-RUN mkdir -p ./src/main/resources && \
-    echo "management.endpoints.web.exposure.include=health" >> ./src/main/resources/application.properties
 
 RUN mvn clean package -DskipTests
 
-# ---- STAGE 3: Runtime ----
+# ---- STAGE 3: Runtime (Vercel) ----
 FROM eclipse-temurin:25-jre-alpine
 
 WORKDIR /app
 
 COPY --from=backend-builder /app/target/*.jar app.jar
 
-# Fly.io injects PORT automatically
 ENV PORT=8080
+EXPOSE 8080
 
-# JVM tuned for Fly.io 512 MB VM
-ENTRYPOINT ["sh", "-c", "java \
-  -XX:+UseParallelGC \
-  -Xss512k \
-  -XX:MaxRAMPercentage=70.0 \
-  -XX:InitialRAMPercentage=40.0 \
-  -XX:MaxDirectMemorySize=64m \
-  -jar app.jar --server.port=${PORT}"]
+ENTRYPOINT ["java",
+  "-XX:+UseParallelGC",
+  "-Xss512k",
+  "-XX:MaxRAMPercentage=75.0",
+  "-Dserver.port=8080",
+  "-Dserver.address=0.0.0.0",
+  "-jar", "app.jar"
+]
