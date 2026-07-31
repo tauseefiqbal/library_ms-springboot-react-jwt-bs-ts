@@ -1,35 +1,19 @@
-# ===========================================================
-# Render-Optimized Dockerfile: Spring Boot Backend Only
-# Java 25 + Maven 3.9.15
-# ===========================================================
-
-# ---- STAGE 1: Build Spring Boot Backend ----
 FROM maven:3.9.15-eclipse-temurin-25 AS builder
 
 WORKDIR /app
 
-# Copy pom.xml first (dependency caching)
-COPY pom.xml .
-
+COPY backend/spring-boot-library/pom.xml .
 RUN mvn -B -q -DskipTests dependency:go-offline
 
-# Copy backend source
-COPY src ./src
-
-# Build Spring Boot JAR
+COPY backend/spring-boot-library/src ./src
 RUN mvn clean package -DskipTests
 
-# ---- STAGE 2: Runtime ----
 FROM eclipse-temurin:25-jre-alpine
-
 WORKDIR /app
 
-# Copy JAR from builder stage
 COPY --from=builder /app/target/*.jar app.jar
 
-# Render injects PORT automatically
 ENV PORT=8080
-
 EXPOSE 8080
 
 ENTRYPOINT ["sh", "-c", "java \
