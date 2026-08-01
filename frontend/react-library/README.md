@@ -123,7 +123,7 @@ The application is deployed and available at:
 | Component | URL |
 |---|---|
 | **Frontend** | https://library-ms-springboot-react-jwt-bs-ts-fe.onrender.com |
-| **Backend API** | https://library-ms-springboot-react-jwt-bs-ts.onrender.com |
+| **Backend API** | https://library-ms-springboot-react-jwt-bs-ts-be.onrender.com |
 
 > **Note:** The application is hosted on Render's starter package. 
 
