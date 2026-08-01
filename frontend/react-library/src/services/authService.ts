@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL ?? 'https://library-ms-springboot-react-jwt-bs-ts.onrender.com'}/api/auth`;
+const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL ?? 'https://library-ms-springboot-react-jwt-bs-ts-be.onrender.com'}/api/auth`;
 
 export interface AuthResponse {
   token: string;

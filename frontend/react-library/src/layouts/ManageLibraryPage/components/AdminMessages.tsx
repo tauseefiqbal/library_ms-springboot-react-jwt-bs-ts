@@ -7,7 +7,7 @@ import { Pagination } from '../../Utils/Pagination';
 import { SpinnerLoading } from '../../Utils/SpinnerLoading';
 import { AdminMessage } from './AdminMessage';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'https://library-ms-springboot-react-jwt-bs-ts.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'https://library-ms-springboot-react-jwt-bs-ts-be.onrender.com';
 
 export const AdminMessages = () => {
 

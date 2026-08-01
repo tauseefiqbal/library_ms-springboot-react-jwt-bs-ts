@@ -11,7 +11,7 @@ import authService from "../../services/authService";
 import placeholderImg from './../../Images/BooksImages/book-luv2code-1000.png';
 import { formatImageSrc } from '../../Utils/ImageUtils';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'https://library-ms-springboot-react-jwt-bs-ts.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'https://library-ms-springboot-react-jwt-bs-ts-be.onrender.com';
 
 export const BookCheckoutPage = () => {
     const { isAuthenticated, isLoading: authLoading } = useAuth();

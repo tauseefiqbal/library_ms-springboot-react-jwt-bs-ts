@@ -1,7 +1,7 @@
  import axios from 'axios';
 import authService from './authService';
 
-const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL ?? 'https://library-ms-springboot-react-jwt-bs-ts.onrender.com'}/api`;
+const API_BASE_URL = `${import.meta.env.VITE_API_BASE_URL ?? 'https://library-ms-springboot-react-jwt-bs-ts-be.onrender.com'}/api`;
 
 // Create axios instance with base configuration
 const apiService = axios.create({
