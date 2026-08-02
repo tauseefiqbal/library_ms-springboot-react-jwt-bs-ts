@@ -1,0 +1,24 @@
+version: 1
+
+services:
+  app:
+    name: fullstack-app
+    type: web
+    dockerfile: Dockerfile
+    buildContext: .
+    ports:
+      - port: 80
+        protocol: tcp
+
+    env:
+      SPRING_PROFILES_ACTIVE: "prod"
+      JAVA_OPTS: "-XX:+UseParallelGC -Xss512k -XX:MaxRAMPercentage=75.0"
+
+    scaling:
+      min: 1
+      max: 1
+      memory: 512MB
+      cpu: 1
+
+    healthCheck:
+      enabled: false
