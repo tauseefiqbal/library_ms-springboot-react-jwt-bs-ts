@@ -1,6 +1,6 @@
 # ===========================================================
-# Back4App-Optimized Dockerfile: React + Spring Boot
-# Java 25 + Maven 3.9.15 - Updated 2026-08-02
+# Render-Optimized Dockerfile: React + Spring Boot
+# Java 25 + Maven 3.9.15 - Updated 2026-07-06
 # ===========================================================
 
 # ---- STAGE 1: Build React Frontend ----
@@ -16,7 +16,7 @@ RUN npm ci || npm install
 # Copy full frontend source
 COPY frontend/react-library/ ./
 
-# Build with same-origin API (Back4App serves static files directly)
+# Build with same-origin API (Render will proxy /api)
 ENV VITE_API_BASE_URL=""
 RUN npm run build
 
@@ -25,7 +25,7 @@ FROM maven:3.9.15-eclipse-temurin-25 AS backend-builder
 
 WORKDIR /app
 
-# Copy pom first for dependency caching
+# Copy pom first (Render does NOT persist Docker cache, but this still helps)
 COPY backend/spring-boot-library/pom.xml .
 
 RUN mvn -B -q -DskipTests dependency:go-offline
@@ -35,6 +35,10 @@ COPY backend/spring-boot-library/src ./src
 
 # Copy React build into Spring Boot static resources
 COPY --from=frontend-builder /app/frontend/dist ./src/main/resources/static
+
+# Enable health endpoint for Render
+RUN mkdir -p ./src/main/resources && \
+    echo "management.endpoints.web.exposure.include=health" >> ./src/main/resources/application.properties
 
 # Build Spring Boot JAR
 RUN mvn clean package -DskipTests
@@ -46,11 +50,11 @@ WORKDIR /app
 
 COPY --from=backend-builder /app/target/*.jar app.jar
 
-# Back4App expects the container to listen on port 80
-EXPOSE 80
+# Render injects PORT automatically
+ENV PORT=8080
 
 ENTRYPOINT ["sh", "-c", "java \
   -XX:+UseParallelGC \
   -Xss512k \
   -XX:MaxRAMPercentage=75.0 \
-  -jar app.jar --server.port=80"]
+  -jar app.jar --server.port=${PORT}"]
